@@ -36,7 +36,7 @@ if (Meteor.isServer) {
     }
 
     // search and parse all <meta>
-    var re = /<meta.*(?:name|property)=['"](.*)['"].*content=['"](.*)['"].*>/gmi;
+    var re = /<meta.*(?:name|property)=['"]([^'"]*?)['"].*content=['"]([^'"]*?)['"].*>/gmi;
     while ((m = re.exec(html)) !== null) {
       if (m.index === re.lastIndex) {
           re.lastIndex++;
@@ -49,7 +49,7 @@ if (Meteor.isServer) {
     }
 
     // search for a <title>
-    re = /<title>(.*)<\/title>/gmi; 
+    re = /<title>(.*)<\/title>/gmi;
     while ((m = re.exec(html)) !== null) {
       if (m.index === re.lastIndex) {
           re.lastIndex++;
