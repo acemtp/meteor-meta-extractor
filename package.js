@@ -1,7 +1,7 @@
 Package.describe({
   name: 'acemtp:meta-extractor',
-  version: '1.0.2',
-  summary: 'Extract meta tags (opengraph/facebook, twitter, meta) from an url or a string on client & server.',
+  version: '1.0.3',
+  summary: 'Extract meta tags (Opengraph/Facebook, Twitter, meta) from an url or a string on client & server.',
   git: 'https://github.com/efounders/meteor-meta-extractor',
   documentation: 'README.md'
 });
