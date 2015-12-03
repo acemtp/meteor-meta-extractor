@@ -1,0 +1,13 @@
+<head>
+  <title>Meta Extractor Example</title>
+</head>
+
+<body>
+  {{> extract}}
+</body>
+
+<template name="extract">
+  <p>Enter an url then press enter to extract metas</p>
+  <input type="text" id="url" placeholder="http://google.com">
+  <pre>{{metas}}</pre>
+</template>

@@ -30,3 +30,8 @@ Both example will display something like:
       image: 'http://efounders.co/public/images/630_homepage.jpg',
       url: 'http://efounders.co/'
     }
+
+Example
+-------
+
+Go to `example` directory and run meteor inside it. You can try the example here: http://meta-extractor.meteor.com

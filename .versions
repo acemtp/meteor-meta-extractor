@@ -1,5 +1,5 @@
-acemtp:meta-extractor@1.0.0
-http@1.1.0
-meteor@1.1.5
-underscore@1.0.3
-url@1.0.4
+acemtp:meta-extractor@1.0.1
+http@1.1.1
+meteor@1.1.9
+underscore@1.0.4
+url@1.0.5
