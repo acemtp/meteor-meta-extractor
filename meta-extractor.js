@@ -51,7 +51,6 @@ if (Meteor.isServer) {
       if (match.index === meta_tag_regex.lastIndex) {
         meta_tag_regex.lastIndex++;
       }
-      console.dir(match);
 
       if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') meta.description = match[2];
       if(match[1] === 'og:image' || match[1] === 'twitter:image') meta.image = match[2];
