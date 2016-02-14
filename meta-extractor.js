@@ -10,12 +10,11 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-
   // Server side example (sync):
   // console.log(extractMeta('http://efounders.co'));
 
   extractMeta = function (params) {
-    var html;
+    var html, match;
     var meta = {};
 
     if(params.substr(0, 4) === 'http') {
@@ -35,27 +34,29 @@ if (Meteor.isServer) {
       html = params;
     }
 
-    // search and parse all <meta>
-    var re = /<meta.*(?:name|property)=['"]([^'"]*?)['"][\w\W]*?content=['"]([^'"]*?)['"].*>/gmi;
-    while ((m = re.exec(html)) !== null) {
-      if (m.index === re.lastIndex) {
-          re.lastIndex++;
-      }
-      //console.log('m', m);
-      if(m[1] === 'description' || m[1] === 'og:description' || m[1] === 'twitter:description') meta.description = m[2];
-      if(m[1] === 'og:image' || m[1] === 'twitter:image') meta.image = m[2];
-      if(m[1] === 'og:title' || m[1] === 'twitter:title') meta.title = m[2];
-      if(m[1] === 'og:url') meta.url = m[2];
-    }
 
     // search for a <title>
-    re = /<title>(.*)<\/title>/gmi;
-    while ((m = re.exec(html)) !== null) {
-      if (m.index === re.lastIndex) {
-          re.lastIndex++;
+    var title_regex = /<title>(.*)<\/title>/gmi;
+    while ((match = title_regex.exec(html)) !== null) {
+      if (match.index === title_regex.lastIndex) {
+        title_regex.lastIndex++;
       }
       //console.log('m', m);
-      meta.title = m[1];
+      meta.title = match[1];
+    }
+
+    // search and parse all <meta>
+    var meta_tag_regex = /<meta.*?(?:name|property|http-equiv)=['"]([^'"]*?)['"][\w\W]*?content=['"]([^'"]*?)['"].*?>/gmi;
+    while ((match = meta_tag_regex.exec(html)) !== null) {
+      if (match.index === meta_tag_regex.lastIndex) {
+        meta_tag_regex.lastIndex++;
+      }
+      console.dir(match);
+
+      if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') meta.description = match[2];
+      if(match[1] === 'og:image' || match[1] === 'twitter:image') meta.image = match[2];
+      if(match[1] === 'og:title' || match[1] === 'twitter:title') meta.title = match[2];
+      if(match[1] === 'og:url') meta.url = match[2];
     }
     return meta;
   };
