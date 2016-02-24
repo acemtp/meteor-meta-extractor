@@ -10,8 +10,7 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  // Server side example (sync):
-  // console.log(extractMeta('http://efounders.co'));
+  var he = Npm.require('he');
 
   extractMeta = function (params) {
     var html, match;
@@ -52,10 +51,18 @@ if (Meteor.isServer) {
         meta_tag_regex.lastIndex++;
       }
 
-      if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') meta.description = match[2];
-      if(match[1] === 'og:image' || match[1] === 'twitter:image') meta.image = match[2];
-      if(match[1] === 'og:title' || match[1] === 'twitter:title') meta.title = match[2];
-      if(match[1] === 'og:url') meta.url = match[2];
+      if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') {
+        meta.description = he.decode(match[2]);
+      }
+      if(match[1] === 'og:image' || match[1] === 'twitter:image') {
+        meta.image = he.decode(match[2]);
+      }
+      if(match[1] === 'og:title' || match[1] === 'twitter:title') {
+        meta.title = he.decode(match[2]);
+      }
+      if(match[1] === 'og:url') {
+        meta.url = match[2];
+      }
     }
     return meta;
   };

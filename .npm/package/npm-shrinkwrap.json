@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "he": {
+      "version": "0.5.0"
+    }
+  }
+}
