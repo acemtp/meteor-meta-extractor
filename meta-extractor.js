@@ -61,7 +61,7 @@ if (Meteor.isServer) {
         meta.title = he.decode(match[2]);
       }
       if(match[1] === 'og:url') {
-        meta.url = match[2];
+        meta.url = he.decode(match[2]);
       }
     }
     return meta;
