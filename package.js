@@ -8,6 +8,9 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('0.9.0');
+  Npm.depends({
+    "he": "0.5.0"
+  });
   api.use(['http', 'check'], ['server']);
   api.addFiles('meta-extractor.js');
   api.export('extractMeta');
