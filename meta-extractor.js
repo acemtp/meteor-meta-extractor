@@ -1,3 +1,5 @@
+"use strict";
+
 if (Meteor.isClient) {
 
   // Client side example (async):
