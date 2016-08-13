@@ -19,10 +19,10 @@ if (Meteor.isServer) {
     let match;
     const META = {};
 
-    if(params.substr(0, 4) === 'http') {
+    if (params.substr(0, 4) === 'http') {
       try {
         let result = HTTP.call('GET', params);
-        if(result.statusCode !== 200) {
+        if (result.statusCode !== 200) {
           return META;
         }
         html = result.content;
@@ -37,6 +37,7 @@ if (Meteor.isServer) {
 
     // search for a <title>
     let title_regex = /<title>(.*)<\/title>/gmi;
+
     while ((match = title_regex.exec(html)) !== null) {
       if (match.index === title_regex.lastIndex) {
         title_regex.lastIndex++;
