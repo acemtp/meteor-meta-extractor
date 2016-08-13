@@ -23,11 +23,9 @@ if (Meteor.isServer) {
       try {
         let result = HTTP.call('GET', params);
         if(result.statusCode !== 200) {
-          //console.log('bad status', result);
           return META;
         }
         html = result.content;
-        //console.log('result', result);
       } catch (e) {
         console.log('catch error', e);
         return META;
@@ -43,7 +41,6 @@ if (Meteor.isServer) {
       if (match.index === title_regex.lastIndex) {
         title_regex.lastIndex++;
       }
-      //console.log('m', m);
       META.title = match[1];
     }
 
