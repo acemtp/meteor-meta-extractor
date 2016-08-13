@@ -49,6 +49,14 @@ if (Meteor.isServer) {
 
     // search and parse all <meta>
     let meta_tag_regex = /<meta.*?(?:name|property|http-equiv)=['"]([^'"]*?)['"][\w\W]*?content=['"]([^'"]*?)['"].*?>/gmi;
+
+    let tags = {
+      title: ['title', 'og:title', 'twitter:title'],
+      description: ['description', 'og:description', 'twitter:description'],
+      image: ['image', 'og:image', 'twitter:image'],
+      url: ['url', 'og:url', 'twitter:url']
+    };
+
     while ((match = meta_tag_regex.exec(html)) !== null) {
       if (match.index === meta_tag_regex.lastIndex) {
         meta_tag_regex.lastIndex++;
