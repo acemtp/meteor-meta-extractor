@@ -62,19 +62,26 @@ if (Meteor.isServer) {
         meta_tag_regex.lastIndex++;
       }
 
-      if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') {
-        META.description = he.decode(match[2]);
-      }
-      if(match[1] === 'og:image' || match[1] === 'twitter:image') {
-        META.image = he.decode(match[2]);
-      }
-      if(match[1] === 'og:title' || match[1] === 'twitter:title') {
-        META.title = he.decode(match[2]);
-      }
-      if(match[1] === 'og:url') {
-        META.url = he.decode(match[2]);
+      for (let item in tags) {
+        for (let possibleProperty of tags[item]) {
+
+          if (match[1] === possibleProperty) {
+
+            let property = tags[item][0];
+            let content = match[2];
+
+            // Only push content to our 'META' object if 'META' doesn't already
+            // contain content for that property.
+            if (!META[property]) {
+              META[property] = he.decode(content);
+            }
+
+          }
+
+        }
       }
     }
+
     return META;
   };
 
