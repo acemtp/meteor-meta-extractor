@@ -1,3 +1,5 @@
+"use strict";
+
 if (Meteor.isClient) {
 
   // Client side example (async):
@@ -10,24 +12,23 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  var he = Npm.require('he');
+  let he = Npm.require('he');
 
   extractMeta = function (params) {
-    var html, match;
-    var meta = {};
+    let html;
+    let match;
+    const META = {};
 
-    if(params.substr(0, 4) === 'http') {
+    if (params.substr(0, 4) === 'http') {
       try {
-        var result = HTTP.call('GET', params);
-        if(result.statusCode !== 200) {
-          //console.log('bad status', result);
-          return meta;
+        let result = HTTP.call('GET', params);
+        if (result.statusCode !== 200) {
+          return META;
         }
         html = result.content;
-        //console.log('result', result);
       } catch (e) {
         console.log('catch error', e);
-        return meta;
+        return META;
       }
     } else {
       html = params;
@@ -35,36 +36,51 @@ if (Meteor.isServer) {
 
 
     // search for a <title>
-    var title_regex = /<title>(.*)<\/title>/gmi;
+    let title_regex = /<title>(.*)<\/title>/gmi;
+
     while ((match = title_regex.exec(html)) !== null) {
       if (match.index === title_regex.lastIndex) {
         title_regex.lastIndex++;
       }
-      //console.log('m', m);
-      meta.title = match[1];
+      META.title = match[1];
     }
 
     // search and parse all <meta>
-    var meta_tag_regex = /<meta.*?(?:name|property|http-equiv)=['"]([^'"]*?)['"][\w\W]*?content=['"]([^'"]*?)['"].*?>/gmi;
+    let meta_tag_regex = /<meta.*?(?:name|property|http-equiv)=['"]([^'"]*?)['"][\w\W]*?content=['"]([^'"]*?)['"].*?>/gmi;
+
+    let tags = {
+      title: ['title', 'og:title', 'twitter:title'],
+      description: ['description', 'og:description', 'twitter:description'],
+      image: ['image', 'og:image', 'twitter:image'],
+      url: ['url', 'og:url', 'twitter:url']
+    };
+
     while ((match = meta_tag_regex.exec(html)) !== null) {
       if (match.index === meta_tag_regex.lastIndex) {
         meta_tag_regex.lastIndex++;
       }
 
-      if(match[1] === 'description' || match[1] === 'og:description' || match[1] === 'twitter:description') {
-        meta.description = he.decode(match[2]);
-      }
-      if(match[1] === 'og:image' || match[1] === 'twitter:image') {
-        meta.image = he.decode(match[2]);
-      }
-      if(match[1] === 'og:title' || match[1] === 'twitter:title') {
-        meta.title = he.decode(match[2]);
-      }
-      if(match[1] === 'og:url') {
-        meta.url = he.decode(match[2]);
+      for (let item in tags) {
+        for (let possibleProperty of tags[item]) {
+
+          if (match[1] === possibleProperty) {
+
+            let property = tags[item][0];
+            let content = match[2];
+
+            // Only push content to our 'META' object if 'META' doesn't already
+            // contain content for that property.
+            if (!META[property]) {
+              META[property] = he.decode(content);
+            }
+
+          }
+
+        }
       }
     }
-    return meta;
+
+    return META;
   };
 
   Meteor.methods({
