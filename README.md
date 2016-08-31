@@ -34,4 +34,4 @@ Both example will display something like:
 Example
 -------
 
-Go to `example` directory and run meteor inside it. You can try the example here: http://meta-extractor.meteor.com
+Go to `example` directory and run meteor inside it.
